@@ -1,7 +1,7 @@
 <!-- HEADER AREA START (header-5) -->
-<header class="ltn__header-area ltn__header-5 ltn__header-transparent gradient-color-2">
+<header class="ltn__header-area ltn__header-5 ltn__header-transparent gradient-color-4---">
     <!-- ltn__header-top-area start -->
-    <div class="ltn__header-top-area d-none">
+    <div class="ltn__header-top-area">
         <div class="container">
             <div class="row">
                 <div class="col-md-7">
@@ -13,7 +13,7 @@
                     </div>
                 </div>
                 <div class="col-md-5">
-                    <div class="top-bar-right text-right text-end">
+                    <div class="top-bar-right  text-end">
                         <div class="ltn__top-bar-menu">
                             <ul>
                                 <li>
@@ -55,17 +55,17 @@
     <!-- ltn__header-top-area end -->
 
     <!-- ltn__header-middle-area start -->
-    <div class="ltn__header-middle-area ltn__header-sticky ltn__sticky-bg-black ltn__logo-right-menu-option plr--9---">
+    <div class="ltn__header-middle-area ltn__header-sticky ltn__sticky-bg-white ltn__logo-right-menu-option sticky-active-into-mobile--- plr--9---">
         <div class="container">
             <div class="row">
                 <div class="col">
                     <div class="site-logo-wrap">
                         <div class="site-logo">
-                            <a href="index.html"><img src="images/logo-2.png" alt="Logo"></a>
+                            <a href="index.html"><img src="{{ asset('clients/images/logo.png') }}" alt="Logo"></a>
                         </div>
                     </div>
                 </div>
-                <div class="col header-menu-column menu-color-white">
+                <div class="col header-menu-column menu-color-white---">
                     <div class="header-menu d-none d-xl-block">
                         <nav>
                             <div class="ltn__main-menu">
@@ -74,47 +74,47 @@
                                         <ul class="sub-menu menu-pages-img-show ltn__sub-menu-col-2---">
                                             <li>
                                                 <a href="index.html">Home Style 01</a>
-                                                <img src="images/home-1.jpg" alt="#">
+                                                <img src="{{ asset('clients/images/home-1') }}.jpg" alt="#">
                                             </li>
                                             <li>
                                                 <a href="index-2.html">Home Style 02</a>
-                                                <img src="images/home-2.jpg" alt="#">
+                                                <img src="{{ asset('clients/images/home-2') }}.jpg" alt="#">
                                             </li>
                                             <li>
                                                 <a href="index-3.html">Home Style 03</a>
-                                                <img src="images/home-3.jpg" alt="#">
+                                                <img src="{{ asset('clients/images/home-3') }}.jpg" alt="#">
                                             </li>
                                             <li>
                                                 <a href="index-4.html">Home Style 04</a>
-                                                <img src="images/home-4.jpg" alt="#">
+                                                <img src="{{ asset('clients/images/home-4') }}.jpg" alt="#">
                                             </li>
                                             <li>
                                                 <a href="index-5.html">Home Style 05 <span class="menu-item-badge">video</span></a>
-                                                <img src="images/home-5.jpg" alt="#">
+                                                <img src="{{ asset('clients/images/home-5') }}.jpg" alt="#">
                                             </li>
                                             <li>
                                                 <a href="index-6.html">Home Style 06</a>
-                                                <img src="images/home-6.jpg" alt="#">
+                                                <img src="{{ asset('clients/images/home-6') }}.jpg" alt="#">
                                             </li>
                                             <li>
                                                 <a href="index-7.html">Home Style 07</a>
-                                                <img src="images/home-7.jpg" alt="#">
+                                                <img src="{{ asset('clients/images/home-7') }}.jpg" alt="#">
                                             </li>
                                             <li>
                                                 <a href="index-8.html">Home Style 08</a>
-                                                <img src="images/home-8.jpg" alt="#">
+                                                <img src="{{ asset('clients/images/home-8') }}.jpg" alt="#">
                                             </li>
                                             <li>
                                                 <a href="index-9.html">Home Style 09</a>
-                                                <img src="images/home-9.jpg" alt="#">
+                                                <img src="{{ asset('clients/images/home-9') }}.jpg" alt="#">
                                             </li>
                                             <li>
                                                 <a href="index-10.html">Home Style 10</a>
-                                                <img src="images/home-10.jpg" alt="#">
+                                                <img src="{{ asset('clients/images/home-10') }}.jpg" alt="#">
                                             </li>
                                             <li>
                                                 <a href="index-11.html">Home Style 11 <span class="menu-item-badge">Service</span></a>
-                                                <img src="images/home-11.jpg" alt="#">
+                                                <img src="{{ asset('clients/images/home-11') }}.jpg" alt="#">
                                             </li>
                                         </ul>
                                     </li>
@@ -194,7 +194,7 @@
                                                     <li><a href="cart.html">Cart</a></li>
                                                 </ul>
                                             </li>
-                                            <li><a href="shop.html"><img src="images/menu-banner-1.png" alt="#"></a>
+                                            <li><a href="shop.html"><img src="{{ asset('clients/images/menu-banner') }}-1.png" alt="#"></a>
                                             </li>
                                         </ul>
                                     </li>
@@ -262,6 +262,7 @@
     <!-- ltn__header-middle-area end -->
 </header>
 <!-- HEADER AREA END -->
+
 <!-- Utilize Cart Menu Start -->
 <div id="ltn__utilize-cart-menu" class="ltn__utilize ltn__utilize-cart-menu">
     <div class="ltn__utilize-menu-inner ltn__scrollbar">
@@ -272,7 +273,7 @@
         <div class="mini-cart-product-area ltn__scrollbar">
             <div class="mini-cart-item clearfix">
                 <div class="mini-cart-img">
-                    <a href="#"><img src="images/1.png" alt="Image"></a>
+                    <a href="#"><img src="{{ asset('clients/images/1_1.png') }}" alt="Image"></a>
                     <span class="mini-cart-item-delete"><i class="icon-cancel"></i></span>
                 </div>
                 <div class="mini-cart-info">
@@ -282,7 +283,7 @@
             </div>
             <div class="mini-cart-item clearfix">
                 <div class="mini-cart-img">
-                    <a href="#"><img src="images/2.png" alt="Image"></a>
+                    <a href="#"><img src="{{ asset('clients/images/2.png') }}" alt="Image"></a>
                     <span class="mini-cart-item-delete"><i class="icon-cancel"></i></span>
                 </div>
                 <div class="mini-cart-info">
@@ -292,7 +293,7 @@
             </div>
             <div class="mini-cart-item clearfix">
                 <div class="mini-cart-img">
-                    <a href="#"><img src="images/3.png" alt="Image"></a>
+                    <a href="#"><img src="{{ asset('clients/images/3.png') }}" alt="Image"></a>
                     <span class="mini-cart-item-delete"><i class="icon-cancel"></i></span>
                 </div>
                 <div class="mini-cart-info">
@@ -302,7 +303,7 @@
             </div>
             <div class="mini-cart-item clearfix">
                 <div class="mini-cart-img">
-                    <a href="#"><img src="images/4.png" alt="Image"></a>
+                    <a href="#"><img src="{{ asset('clients/images/4.png') }}" alt="Image"></a>
                     <span class="mini-cart-item-delete"><i class="icon-cancel"></i></span>
                 </div>
                 <div class="mini-cart-info">
@@ -331,7 +332,7 @@
     <div class="ltn__utilize-menu-inner ltn__scrollbar">
         <div class="ltn__utilize-menu-head">
             <div class="site-logo">
-                <a href="index.html"><img src="images/logo.png" alt="Logo"></a>
+                <a href="index.html"><img src="{{ asset('clients/images/logo.png') }}" alt="Logo"></a>
             </div>
             <button class="ltn__utilize-close">×</button>
         </div>

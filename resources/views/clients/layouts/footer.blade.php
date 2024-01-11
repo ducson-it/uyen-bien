@@ -7,7 +7,7 @@
                     <div class="footer-widget footer-about-widget">
                         <div class="footer-logo mb-10">
                             <div class="site-logo">
-                                <img src="images/logo.png" alt="Logo">
+                                <img src="{{ asset('clients/images/logo.png') }}" alt="Logo">
                             </div>
                         </div>
                         <p>Lorem Ipsum is simply dummy text of the and typesetting industry. Lorem Ipsum is dummy text of the printing.</p>
@@ -120,7 +120,7 @@
                             </div>
                         </div>
                         <h5 class="mt-30">We Accept</h5>
-                        <img src="images/payment-4.png" alt="Payment Image">
+                        <img src="{{ asset('clients/images/payment-4') }}.png" alt="Payment Image">
                     </div>
                 </div>
             </div>
