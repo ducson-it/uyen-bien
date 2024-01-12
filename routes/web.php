@@ -18,7 +18,7 @@ Route::prefix('')->group(function () {
 });
 
 //Route admins
-Route::prefix('admin')->middleware('auth')->group(function () {
+Route::prefix('admin')->middleware('auth','admin')->group(function () {
     require "admins.php";
 });
 
