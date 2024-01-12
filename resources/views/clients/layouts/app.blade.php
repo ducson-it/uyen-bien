@@ -35,13 +35,8 @@
     <div class="body-wrapper">
 
         @include('clients.layouts.header')
-        @include('clients.partials.banner')
 
-        <div class="container">
-
-            @yield('content')
-
-        </div>
+        @yield('content')
 
         @include('clients.layouts.footer')
     </div>

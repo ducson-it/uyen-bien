@@ -12,7 +12,14 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('clients.pages.home');
+//Route clients
+Route::prefix('')->group(function () {
+    require "clients.php";
 });
+
+//Route admins
+Route::prefix('admin')->middleware('auth')->group(function () {
+    require "admins.php";
+});
+
+require __DIR__.'/auth.php';
