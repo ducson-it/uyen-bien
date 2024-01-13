@@ -2,9 +2,7 @@
 
 namespace App\Repositories;
 
-use Illuminate\Database\Eloquent\Model;
-
-interface RepositoriesInterface
+interface RepositoryInterface
 {
     public function applyBeforeExecuteQuery($data, bool $isSingle = false);
 
@@ -32,7 +30,7 @@ interface RepositoriesInterface
 
     public function createOrUpdate($data, array $condition = []);
 
-    public function delete(Model $model): bool|null;
+    public function delete($model);
 
     public function firstOrCreate(array $data, array $with = []);
 
