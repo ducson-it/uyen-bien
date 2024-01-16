@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use Closure;
-use App\Repositories\RepositoriesInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -12,8 +11,10 @@ use Illuminate\Support\Arr;
 abstract class RepositoriesAbstract implements RepositoryInterface
 {
     protected $originalModel;
+    protected $model;
 
-    public function __construct(Model $model)
+
+    public function __construct($model)
     {
         $this->originalModel = $model;
     }
@@ -32,7 +33,7 @@ abstract class RepositoriesAbstract implements RepositoryInterface
 
     public function getTable(): string
     {
-        if ($this->model instanceof BaseQueryBuilder) {
+        if ($this->model instanceof Builder) {
             return $this->model->getModel()->getTable();
         }
 
@@ -43,7 +44,7 @@ abstract class RepositoriesAbstract implements RepositoryInterface
     {
         $data = $this->make($with)->where('id', $id);
 
-        return $this->applyBeforeExecuteQuery($data, true)->first();
+        return $data->first();
     }
 
     public function make(array $with = [])
@@ -53,15 +54,6 @@ abstract class RepositoriesAbstract implements RepositoryInterface
         }
 
         return $this->model;
-    }
-
-    public function applyBeforeExecuteQuery($data, bool $isSingle = false)
-    {
-        $data = RepositoryHelper::applyBeforeExecuteQuery($data, $this->originalModel, $isSingle);
-
-        $this->resetModel();
-
-        return $data;
     }
 
     public function resetModel(): self
@@ -75,7 +67,7 @@ abstract class RepositoriesAbstract implements RepositoryInterface
     {
         $data = $this->make($with)->where('id', $id);
 
-        $result = $this->applyBeforeExecuteQuery($data, true)->first();
+        $result = $data->first();
 
         if (! empty($result)) {
             return $result;
@@ -87,14 +79,14 @@ abstract class RepositoriesAbstract implements RepositoryInterface
             $model = $model->getModel();
         }
 
-        throw (new ModelNotFoundException())->setModel($model::class, $id);
+        throw (new ModelNotFoundException() )->setModel(get_class($model), $id);
     }
 
     public function all(array $with = [])
     {
         $data = $this->make($with);
 
-        return $this->applyBeforeExecuteQuery($data)->get();
+        return $data->get();
     }
 
     public function pluck(string $column, $key = null, array $condition = []): array
@@ -108,7 +100,7 @@ abstract class RepositoriesAbstract implements RepositoryInterface
 
         $data = $this->model->select($select);
 
-        return $this->applyBeforeExecuteQuery($data)->pluck($column, $key)->all();
+        return $data->pluck($column, $key)->all();
     }
 
     public function allBy(array $condition, array $with = [], array $select = ['*'])
@@ -117,7 +109,7 @@ abstract class RepositoriesAbstract implements RepositoryInterface
 
         $data = $this->make($with)->select($select);
 
-        return $this->applyBeforeExecuteQuery($data)->get();
+        return $data->get();
     }
 
     protected function applyConditions(array $where, &$model = null)
@@ -136,13 +128,20 @@ abstract class RepositoriesAbstract implements RepositoryInterface
             }
 
             if (is_array($value)) {
-                [$field, $condition, $val] = $value;
+                list($field, $condition, $val) = $value;
 
-                $newModel = match (strtoupper($condition)) {
-                    'IN' => $newModel->whereIn($field, $val),
-                    'NOT_IN' => $newModel->whereNotIn($field, $val),
-                    default => $newModel->where($field, $condition, $val),
-                };
+                $condition = strtoupper($condition);
+
+                switch ($condition) {
+                    case 'IN':
+                        $newModel = $newModel->whereIn($field, $val);
+                        break;
+                    case 'NOT_IN':
+                        $newModel = $newModel->whereNotIn($field, $val);
+                        break;
+                    default:
+                        $newModel = $newModel->where($field, $condition, $val);
+                }
             } else {
                 $newModel = $newModel->where($field, $value);
             }
@@ -207,10 +206,10 @@ abstract class RepositoriesAbstract implements RepositoryInterface
             $data = $this->model->select('*');
         }
 
-        return $this->applyBeforeExecuteQuery($data, true)->first();
+        return $data->first();
     }
 
-    public function delete($model): bool|null
+    public function delete($model)
     {
         return $model->delete();
     }
@@ -241,7 +240,7 @@ abstract class RepositoriesAbstract implements RepositoryInterface
 
         $data = $this->model->select($select);
 
-        return $this->applyBeforeExecuteQuery($data);
+        return $data;
     }
 
     public function deleteBy(array $condition = []): bool
@@ -282,7 +281,7 @@ abstract class RepositoriesAbstract implements RepositoryInterface
             $this->applyConditions($args['where']);
         }
 
-        $data = $this->applyBeforeExecuteQuery($data);
+        $data = $data;
 
         if (! empty(Arr::get($args, 'paginate'))) {
             return $data->paginate((int)$args['paginate']);
@@ -340,9 +339,9 @@ abstract class RepositoriesAbstract implements RepositoryInterface
         }
 
         if ($params['take'] == 1) {
-            $result = $this->applyBeforeExecuteQuery($data, true)->first();
+            $result = $data->first();
         } elseif ($params['take'] && $params['take'] > 0) {
-            $result = $this->applyBeforeExecuteQuery($data)->take((int)$params['take'])->get();
+            $result = $data->take((int)$params['take'])->get();
         } elseif ($params['paginate']['per_page']) {
             $paginateType = 'paginate';
 
@@ -356,7 +355,7 @@ abstract class RepositoriesAbstract implements RepositoryInterface
 
             $currentPage = (int)Arr::get($params, 'paginate.current_paged', 1) ?: 1;
 
-            $result = $this->applyBeforeExecuteQuery($data)
+            $result = $data
                 ->$paginateType(
                     $perPage > 0 ? $perPage : 10,
                     [$originalModel->getTable() . '.' . $originalModel->getKeyName()],
@@ -364,7 +363,7 @@ abstract class RepositoriesAbstract implements RepositoryInterface
                     $currentPage > 0 ? $currentPage : 1
                 );
         } else {
-            $result = $this->applyBeforeExecuteQuery($data)->get();
+            $result = $data->get();
         }
 
         return $result;
@@ -400,7 +399,7 @@ abstract class RepositoriesAbstract implements RepositoryInterface
             return $query->select($select)->first();
         }
 
-        return $this->applyBeforeExecuteQuery($query, true)->first();
+        return $query->first();
     }
 
     public function insert(array $data): bool

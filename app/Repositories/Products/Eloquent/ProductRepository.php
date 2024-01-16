@@ -14,11 +14,11 @@ class ProductRepository extends RepositoriesAbstract implements ProductInterface
     public function getFeatured(int $limit = 5, array $with = [])
     {
         $data = $this->model
+            ->where('is_featured', 1)
             ->limit($limit)
-            ->with(array_merge(['slugable'], $with))
             ->orderByDesc('created_at');
 
-        return $this->applyBeforeExecuteQuery($data)->get();
+        return $data->get();
     }
 
     public function getListPostNonInList(array $selected = [], int $limit = 7, array $with = [])
@@ -30,7 +30,7 @@ class ProductRepository extends RepositoriesAbstract implements ProductInterface
             ->with($with)
             ->orderByDesc('created_at');
 
-        return $this->applyBeforeExecuteQuery($data)->get();
+        return $data->get();
     }
 
     public function getRelated($id, int $limit = 3)
@@ -46,11 +46,11 @@ class ProductRepository extends RepositoriesAbstract implements ProductInterface
             ->limit($limit)
             ->with('slugable')
             ->orderByDesc('created_at')
-            ->whereHas('categories', function (Builder $query) use ($id) {
+            ->whereHas('categories', function ($query) use ($id) {
                 $query->whereIn('categories.id', $this->getRelatedCategoryIds($id));
             });
 
-        return $this->applyBeforeExecuteQuery($data)->get();
+        return $data->get();
     }
 
     public function getRelatedCategoryIds($model)
@@ -63,7 +63,7 @@ class ProductRepository extends RepositoriesAbstract implements ProductInterface
 
         try {
             return $model->categories()->allRelatedIds()->toArray();
-        } catch (Exception) {
+        } catch (Exception $e) {
             return [];
         }
     }
@@ -84,33 +84,27 @@ class ProductRepository extends RepositoriesAbstract implements ProductInterface
             ->orderByDesc('created_at');
 
         if ($paginate != 0) {
-            return $this->applyBeforeExecuteQuery($data)->paginate($paginate);
+            return $data->paginate($paginate);
         }
 
-        return $this->applyBeforeExecuteQuery($data)->limit($limit)->get();
+        return $data->limit($limit)->get();
     }
 
     public function getByUserId($authorId, int $paginate = 6)
     {
         $data = $this->model
-            ->where([
-                'status' => BaseStatusEnum::PUBLISHED,
-                'author_id' => $authorId,
-            ])
-            ->with('slugable')
             ->orderByDesc('created_at');
 
-        return $this->applyBeforeExecuteQuery($data)->paginate($paginate);
+        return $data->paginate($paginate);
     }
 
     public function getDataSiteMap()
     {
         $data = $this->model
-            ->with('slugable')
             ->wherePublished()
             ->orderByDesc('created_at');
 
-        return $this->applyBeforeExecuteQuery($data)->get();
+        return $data->get();
     }
 
     public function getByTag($tag, int $paginate = 12)
@@ -123,12 +117,12 @@ class ProductRepository extends RepositoriesAbstract implements ProductInterface
             })
             ->orderByDesc('created_at');
 
-        return $this->applyBeforeExecuteQuery($data)->paginate($paginate);
+        return $data->paginate($paginate);
     }
 
     public function getRecentPosts(int $limit = 5, $categoryId = 0)
     {
-        $data = $this->model->where(['status' => BaseStatusEnum::PUBLISHED]);
+        $data = $this->model;
 
         if ($categoryId != 0) {
             $data = $data
@@ -142,7 +136,7 @@ class ProductRepository extends RepositoriesAbstract implements ProductInterface
             ->select('*')
             ->orderByDesc('created_at');
 
-        return $this->applyBeforeExecuteQuery($data)->get();
+        return $data->get();
     }
 
     public function getSearch($keyword,
@@ -161,10 +155,10 @@ class ProductRepository extends RepositoriesAbstract implements ProductInterface
         }
 
         if ($paginate) {
-            return $this->applyBeforeExecuteQuery($data)->paginate($paginate);
+            return $data->paginate($paginate);
         }
 
-        return $this->applyBeforeExecuteQuery($data)->get();
+        return $data->get();
     }
 
     public function getAllPosts(
@@ -180,7 +174,7 @@ class ProductRepository extends RepositoriesAbstract implements ProductInterface
             $data = $data->wherePublished();
         }
 
-        return $this->applyBeforeExecuteQuery($data)->paginate($perPage);
+        return $data->paginate($perPage);
     }
 
     public function getPopularPosts(int $limit, array $args = [])
@@ -195,7 +189,7 @@ class ProductRepository extends RepositoriesAbstract implements ProductInterface
             $data = $data->where($args['where']);
         }
 
-        return $this->applyBeforeExecuteQuery($data)->get();
+        return $data->get();
     }
 
     public function getFilters(array $filters)
@@ -248,26 +242,13 @@ class ProductRepository extends RepositoriesAbstract implements ProductInterface
             ->wherePublished()
             ->orderBy($orderBy, $order);
 
-        return $this->applyBeforeExecuteQuery($data)->paginate((int)$filters['per_page']);
+        return $data->paginate((int)$filters['per_page']);
     }
 
-    protected function search(Builder $model, string|null $keyword): Builder
+    protected function search($model, $keyword)
     {
         if (!$model instanceof Builder || !$keyword) {
             return $model;
-        }
-
-        if (
-            is_plugin_active('language') &&
-            is_plugin_active('language-advanced') &&
-            Language::getCurrentLocale() != Language::getDefaultLocale()
-        ) {
-            return $model
-                ->whereHas('translations', function (Builder $query) use ($keyword) {
-                    $query
-                        ->addSearch('name', $keyword, false, false)
-                        ->addSearch('description', $keyword, false);
-                });
         }
 
         return $model

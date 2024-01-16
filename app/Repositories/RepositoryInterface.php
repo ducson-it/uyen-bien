@@ -4,9 +4,8 @@ namespace App\Repositories;
 
 interface RepositoryInterface
 {
-    public function applyBeforeExecuteQuery($data, bool $isSingle = false);
 
-    public function setModel($model): self;
+    public function setModel($model);
 
     public function getModel();
 
