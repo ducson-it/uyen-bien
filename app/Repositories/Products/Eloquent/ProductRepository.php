@@ -13,10 +13,10 @@ class ProductRepository extends RepositoriesAbstract implements ProductInterface
 {
     public function getFeatured(int $limit = 5, array $with = [])
     {
-        $data = $this->model
-            ->where('is_featured', 1)
-            ->limit($limit)
-            ->orderByDesc('created_at');
+        $data = $this->model;
+            // ->where('is_featured', 1)
+            // ->limit($limit)
+            // ->orderByDesc('created_at');
 
         return $data->get();
     }

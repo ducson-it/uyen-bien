@@ -10,18 +10,17 @@ use Illuminate\Support\Arr;
 
 abstract class RepositoriesAbstract implements RepositoryInterface
 {
-    protected $originalModel;
     protected $model;
 
 
     public function __construct($model)
     {
-        $this->originalModel = $model;
+        $this->model = $model;
     }
 
     public function getModel()
     {
-        return new $this->originalModel();
+        return new $this->model();
     }
 
     public function setModel($model)
@@ -58,7 +57,7 @@ abstract class RepositoriesAbstract implements RepositoryInterface
 
     public function resetModel(): self
     {
-        $this->model = new $this->originalModel();
+        $this->model = new $this->model();
 
         return $this;
     }
@@ -167,13 +166,13 @@ abstract class RepositoriesAbstract implements RepositoryInterface
     {
         if (is_array($data)) {
             if (empty($condition)) {
-                $item = new $this->originalModel();
+                $item = new $this->model();
             } else {
                 $item = $this->getFirstBy($condition);
             }
 
             if (empty($item)) {
-                $item = new $this->originalModel();
+                $item = new $this->model();
             }
 
             $item = $item->fill($data);
@@ -349,7 +348,7 @@ abstract class RepositoriesAbstract implements RepositoryInterface
                 $paginateType = Arr::get($params, 'paginate.type');
             }
 
-            $originalModel = $this->originalModel instanceof Builder ? $this->originalModel->getModel() : $this->originalModel;
+            $model = $this->model instanceof Builder ? $this->model->getModel() : $this->model;
 
             $perPage = (int)Arr::get($params, 'paginate.per_page') ?: 10;
 
@@ -358,7 +357,7 @@ abstract class RepositoriesAbstract implements RepositoryInterface
             $result = $data
                 ->$paginateType(
                     $perPage > 0 ? $perPage : 10,
-                    [$originalModel->getTable() . '.' . $originalModel->getKeyName()],
+                    [$model->getTable() . '.' . $model->getKeyName()],
                     'page',
                     $currentPage > 0 ? $currentPage : 1
                 );
@@ -411,7 +410,7 @@ abstract class RepositoriesAbstract implements RepositoryInterface
     {
         $this->applyConditions($condition);
 
-        $result = $this->model->first() ?: new $this->originalModel();
+        $result = $this->model->first() ?: new $this->model();
 
         $this->resetModel();
 

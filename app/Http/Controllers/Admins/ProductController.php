@@ -8,7 +8,11 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index (ProductInterface $productRepository) {
-        dd($productRepository->getFeatured());
+    private $productRepo;
+    public function __construct(ProductInterface $productRepo) {
+        $this->productRepo = $productRepo;
+    }
+    public function index () {
+        return view('admins.product.index');
     }
 }
