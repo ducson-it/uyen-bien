@@ -21,6 +21,10 @@
 
     <!-- CSS Front Template -->
     <link rel="stylesheet" href="{{ asset('admins\css\theme.min.css?v=1.0') }}">
+
+    <!-- CSS Front Template Custome -->
+    @yield('style')
+
 </head>
 
 <body class="footer-offset">

@@ -2,6 +2,16 @@
 
 @section('title', 'Sản phẩm')
 
+@section('style')
+    <style>
+        .page-header {
+            border-bottom: 0.0625rem solid #e7eaf3;
+            padding-bottom: 1.75rem;
+            margin-bottom: unset;
+        }
+    </style>
+@endsection
+
 @section('content')
      <!-- Content -->
      <div class="content container-fluid">
@@ -1600,3 +1610,5 @@
       </div>
       <!-- End Content -->
 @endsection
+
+@include('admins.product.modalFilter')
