@@ -26,7 +26,7 @@ interface ProductInterface extends RepositoryInterface
 
     public function getRecentPosts(int $limit = 5, $categoryId = 0);
 
-    public function getSearch($keyword, int $limit = 10, int $paginate = 10);
+    public function getSearch($keyword, int $limit, int $paginate);
 
     public function getAllPosts(int $perPage = 12, bool $active = true, array $with = ['slugable']);
 

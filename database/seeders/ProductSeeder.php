@@ -9,14 +9,16 @@ class ProductSeeder extends Seeder
     public function run()
     {
         // Insert dummy products
-        Product::create([
-            'name' => 'sản phẩm 1',
-            'category_id' => 1,
-            'price' => 10000,
-            'description' => 'miêu tả 1',
-            'product_tag' => '10',
-            'is_featured' => 1,
-            'is_available' => 1
-        ]);
+        for ($i=1; $i < 30; $i++) {
+            Product::create([
+                'name' => 'sản phẩm '. $i,
+                'category_id' => $i,
+                'price' => 10000 . $i,
+                'description' => 'miêu tả '.$i,
+                'product_tag' => $i,
+                'is_featured' => 1,
+                'is_available' => 1
+            ]);
+        }
     }
 }

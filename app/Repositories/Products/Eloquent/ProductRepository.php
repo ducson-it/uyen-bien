@@ -139,10 +139,8 @@ class ProductRepository extends RepositoriesAbstract implements ProductInterface
         return $data->get();
     }
 
-    public function getSearch($keyword,
-        int $limit = 10,
-        int $paginate = 10
-    ) {
+    public function getSearch($keyword, $limit, $paginate)
+    {
         $data = $this->model
             ->with('slugable')
             ->wherePublished()

@@ -12,7 +12,13 @@ class ProductController extends Controller
     public function __construct(ProductInterface $productRepo) {
         $this->productRepo = $productRepo;
     }
-    public function index () {
-        return view('admins.product.index');
+    public function index (Request $request) {
+        $params = $request->all();
+        $products = $this->productRepo->allBy([
+            ['name', 'LIKE', @$params['name']],
+            ['category_id', 'IN', [@$params['category_id'] ?? []]],
+        ]);
+        dd($products);
+        return view('admins.product.index', compact('products'));
     }
 }

@@ -18,6 +18,7 @@
     <!-- CSS Implementing Plugins -->
     <link rel="stylesheet" href="{{ asset('admins\css\vendor.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admins\vendor\icon-set\style.css') }}">
+    <link rel="stylesheet" href="{{ asset('admins\css\style.css') }}">
 
     <!-- CSS Front Template -->
     <link rel="stylesheet" href="{{ asset('admins\css\theme.min.css?v=1.0') }}">
